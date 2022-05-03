@@ -1,11 +1,19 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Richard
+  Date: 2022-05-03
+  Time: 10:08 a.m.
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to Travel Experts</title>
+    <meta charset="UTF-8">
+    <title>Package display</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
-    <%--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
         async function fetchPackages()
@@ -43,49 +51,32 @@
             $("#PkgAgencyCommission").val(packageJSON.pkgAgencyCommission);
 
         }
-
-
-        //function that will serve up the package data to show hte user when they go the the homepage.
-
-        function jQueryGetExample()
-         {
-        $(document).ready(function() {
-            $("#ajaxBtn").click(function(){
-                $.get("http://localhost:8080/Group1Term3RestM7_war_exploded/api/getpackages",
-                    function(data,status) {
-                        // $("#package").html(data);
-                        $("#package").append(data.PkgName);
-                        $("#packagedescription").append(data.PkgDesc);
-                        $("#packageprice").append(data.PkgBasePrice);
-                        alert(status);
-                    });
-            })
-
-        })
-
-
-         }
-
-        function postPackages()
-        {
-            $(document).ready(function(){
-                $("input").keyup(function() {
-                    var packageName = $("input").val();
-                })
-            })
-        }
     </script>
 </head>
 <body>
 <h1>
+    Title
 </h1>
-<br/>
-<input type="button" id="ajaxBtn" value="Send GET request" />
-<p id="package"></p>
-<p id="packagedescription"></p>
-<p id="packageprice"></p>
+<h2>
+    title
+</h2>
+
+<select id="packageselect" onchange="fetchPackage(this.value)">
+    <option value="">Select a package to view details</option>
+</select>
+<form>
+    Id:<input id="PackageId" type="number" disabled="disabled" /><br />
+    Name:<input id="PkgName" type="text" /><br />
+    Start Date:<input id="PkgStartDate" type="date" /><br />
+    End Date:<input id="PkgEndDate" type="date" /><br />
+    Description:<input id="PkgDesc" type="text" /><br />
+    Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
+    Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
+</form>
 <script>
-     jQueryGetExample();
+    $(document).ready(function(){
+        fetchPackages();
+    });
 </script>
 </body>
 </html>
