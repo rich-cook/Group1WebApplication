@@ -68,11 +68,11 @@
                     </svg></span><span><strong>Travel Experts</strong></span></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-3"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-3">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="services.html">Packages</a></li>
+                <li class="nav-item"><a class="nav-link active" href="getPackage.jsp">Show</a></li>
+                <li class="nav-item"><a class="nav-link" href="deletePackage.jsp">Delete</a></li>
                 <li class="nav-item"></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="contacts.html">Contacts</a></li>
+                <li class="nav-item"><a class="nav-link" href="putPackage.jsp">Add</a></li>
+                <li class="nav-item"><a class="nav-link" href="contacts.html">Change</a></li>
             </ul>
         </div>
     </div>
