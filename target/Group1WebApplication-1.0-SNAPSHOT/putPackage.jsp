@@ -15,10 +15,10 @@
 
         // insert a new package to travelexperts database
         async function putPackage() {
-            var startdate = dayjs($("#PkgStartDate").val()).format("MMM. D,YYYY");
-            var enddate = dayjs($("#PkgEndDate").val()).format("MMM. D,YYYY");
-            var price =$("#PkgBasePrice").val();
-            var commission =$("#PkgAgencyCommission").val();
+            var startdate = dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD");
+            var enddate = dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD");
+            // var price =$("#PkgBasePrice").val();
+            // var commission =$("#PkgAgencyCommission").val();
 
             const insertData = {
                 "packageId":0,
@@ -57,7 +57,7 @@
             catch (e) {
                 console.log("Error: " + e);
             }
-        };
+        }
 
     </script>
 </head>

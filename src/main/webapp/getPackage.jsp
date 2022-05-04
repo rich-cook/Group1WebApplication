@@ -190,27 +190,23 @@
                                 <option value="">Select a package to view details</option>
                             </select>
                             <form>
-                                Id:<input id="PackageId" type="number" disabled="disabled" /><br />
-                                Name:<input id="PkgName" type="text" /><br />
-                                Start Date:<input id="PkgStartDate" type="date" /><br />
-                                End Date:<input id="PkgEndDate" type="date" /><br />
-                                Description:<input id="PkgDesc" type="text" /><br />
-                                Base Price:<input id="PkgBasePrice" type="number" step=".01" /><br />
-                                Commission:<input id="PkgAgencyCommission" type="number" step=".01" /><br />
+                                <div class="mb-3"><input class="form-control mt-3" id="PackageId" type="number" disabled="disabled" name="name" placeholder="Package ID"></div>
+<%--                                Id:<input id="PackageId" type="number" disabled="disabled" /><br />--%>
+                                <div class="mb-3"><input class="form-control mt-3" id="PkgName" type="text" placeholder="Package Name"></div>
+                                <div class="mb-3"><input class="form-control mt-2" id="PkgStartDate" type="date">
+                                    <div class="mb-3"><input class="form-control mt-2" id="PkgEndDate" type="date">
+                                        <div class="mb-3"><input class="form-control mt-2" id="PkgDesc" type="text"placeholder="Package Description">
+                                            <div class="mb-3"><input class="form-control mt-2" id="PkgBasePrice" type="number" step="0.01" placeholder="Package Base Price">
+                                                <div class="mb-3"><input class="form-control mt-2" id="PkgAgencyCommission" type="number" step=".01" placeholder="Agency Commission">
+
                             </form>
 
 
 
 
-                            <div class="dropdown"><button class="btn btn-primary dropdown-toggle" aria-expanded="false" data-toggle="dropdown" type="button">Dropdown </button>
-                                <div class="dropdown-menu"><a class="dropdown-item" href="#">First Item</a><a class="dropdown-item" href="#">Second Item</a><a class="dropdown-item" href="#">Third Item</a></div>
-                            </div><input class="form-control mt-3" type="text" id="name-1" name="name" placeholder="Package ID">
+
                         </div>
-                        <div class="mb-3"><input class="form-control mt-2" type="text" id="name-3" name="name" placeholder="Package Name"></div>
-                        <div class="mb-3"><input class="form-control mt-2" type="date"><input class="form-control mt-2" type="date"><input class="form-control mt-2" type="text" id="name-2" name="name" placeholder="Package Description"><input class="form-control mt-2" type="text" id="name-4" name="name" placeholder="Base Price"><input class="form-control mt-2" type="text" id="name-5" name="name" placeholder="Agency Commission"></div>
-                        <div class="mb-3"></div>
-                        <div class="mb-3"></div>
-                        <div class="mb-3"></div>
+
                         <div><button class="btn btn-primary shadow d-block w-100" type="submit">Submit</button></div>
                     </form>
                 </div>
