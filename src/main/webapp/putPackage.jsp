@@ -20,7 +20,7 @@
             var price =$("#PkgBasePrice").val();
             var commission =$("#PkgAgencyCommission").val();
 
-            const putData = {
+            const insertData = {
                 "packageId":0,
                 "pkgName":$("#PkgName").val(),
                 "pkgStartDate":startdate,
@@ -38,7 +38,7 @@
                         method: "PUT",
                         //dataType: "json",
                         headers: {"Content-type": "application/json"},
-                        body: JSON.stringify(putData),
+                        body: JSON.stringify(insertData),
                         //mode: "no-cors"
                     });
                 if (!response.ok) {
