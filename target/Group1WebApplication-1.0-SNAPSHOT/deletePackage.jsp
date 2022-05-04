@@ -15,9 +15,7 @@
 
         async function fetchPackages()
         {
-            //var url = "http://localhost:8080/Winter2022JSPDay7REST-1.0-SNAPSHOT/api/package/getpackages";
             var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/getpackages";
-            //var url = "http://localhost:8080/api/getpackages";
             var packages = await fetch(url);
             var packagesJSON = await packages.json();
             for (i=0; i<packagesJSON.length; i++)
@@ -28,9 +26,7 @@
         }
 
         async function fetchPackage(id) {
-            //var url = "http://localhost:8080/Winter2022JSPDay7REST-1.0-SNAPSHOT/api/package/getpackage/" + id;
             var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/getpackage/" + id;
-            //var url = "http://localhost:8080/api/getpackage/" + id;
             var response = await fetch(url);
             if (!response.ok)
             {
@@ -51,13 +47,26 @@
 
         async function deletePackage()
         {
-            var pckID = $("#PackageId").val(packageJSON.packageId).toString();
-            var url ="http://localhost:8080/Group1Term3RestM7_war_exploded/api/deletepackage/" + pckID.substring(2);
-            const response = await fetch(url,
+            var selectID = ($("#PackageId").html()).toString();
+            var url ="http://localhost:8080/Group1Term3RestM7_war_exploded/api/deletepackage/" + selectID.substring(3);
+            try {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
                 {
-                    method:delete,
-                });
-            const data = await response.json();
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+            //const data = await response.json();
 
         }
 
@@ -79,9 +88,11 @@
     <button type="button" onclick="deletePackage()">Delete</button>
 </form>
 <script>
-    $(document).ready(function(){
-        fetchPackages();
-    });
+
+    fetchPackages();
+    // $(document).ready(function(){
+    //     fetchPackages();
+    // });
 </script>
 </body>
 </html>

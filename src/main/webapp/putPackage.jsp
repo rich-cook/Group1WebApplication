@@ -15,8 +15,8 @@
 
         // insert a new package to travelexperts database
         async function putPackage() {
-            var startdate = dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD");
-            var enddate = dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD");
+            var startdate = dayjs($("#PkgStartDate").val()).format("MMM. D,YYYY");
+            var enddate = dayjs($("#PkgEndDate").val()).format("MMM. D,YYYY");
             var price =$("#PkgBasePrice").val();
             var commission =$("#PkgAgencyCommission").val();
 
@@ -31,32 +31,37 @@
             };
 
             //url for add packages from REST app
-            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/putpackage" ;
-            try {
+            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/putpackage/";
+            try
+            {
                 const response = await fetch(url,
                     {
-                        method: "PUT",
+                        method: "put",
                         //dataType: "json",
                         headers: {"Content-type": "application/json"},
-                        body: JSON.stringify(insertData),
-                        //mode: "no-cors"
+                        body: JSON.stringify(insertData)
+
                     });
                 if (!response.ok) {
                     const message = "Insert failed: status=" + response.status;
                     throw new Error(message);
                 }
-                const data = await response.json();
-                $("#message").html(data.message);
-            } catch (e) {
+                else
+                {
+                    alert("Package Inserted");
+                    window.location.reload();
+                }
+                //const data = await response.json();
+               // $("#message").html(data.message);
+            }
+            catch (e) {
                 console.log("Error: " + e);
             }
         };
 
     </script>
 </head>
-<%--<header>--%>
-<%--    <jsp:include page="header.jsp" />--%>
-<%--</header>--%>
+
 <body>
 <h1>Travel Experts
 </h1>

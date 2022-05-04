@@ -47,13 +47,26 @@
 
         async function deletePackage()
         {
-            var pckID = $("#PackageId").val(packageJSON.packageId).toString();
-            var url ="http://localhost:8080/Group1Term3RestM7_war_exploded/api/deletepackage/" + pckID.substring(2);
-            const response = await fetch(url,
+            var selectID = ($("#PackageId").html()).toString();
+            var url ="http://localhost:8080/Group1Term3RestM7_war_exploded/api/deletepackage/" + selectID.substring(3);
+            try {
+                const response = await fetch(url,
+                    {
+                        method: "delete"
+                    });
+                if (!response.ok)
                 {
-                    method:delete,
-                });
-            const data = await response.json();
+                    const message = "Delete failed: status=" + response.status;
+                    throw new Error(message);
+                }
+                const data = await response.json();
+                $("#message").html(data.message);
+            }
+            catch (e)
+            {
+                console.log("Error: " + e);
+            }
+            //const data = await response.json();
 
         }
 
@@ -75,9 +88,11 @@
     <button type="button" onclick="deletePackage()">Delete</button>
 </form>
 <script>
-    $(document).ready(function(){
-        fetchPackages();
-    });
+
+    fetchPackages();
+    // $(document).ready(function(){
+    //     fetchPackages();
+    // });
 </script>
 </body>
 </html>
