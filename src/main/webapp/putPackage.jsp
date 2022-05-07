@@ -22,9 +22,8 @@
         async function putPackage() {
             var startdate = dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD");
             var enddate = dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD");
-            // var price =$("#PkgBasePrice").val();
-            // var commission =$("#PkgAgencyCommission").val();
 
+            //json format of data to be inserted
             const insertData = {
                 "packageId":0,
                 "pkgName":$("#PkgName").val(),
@@ -69,7 +68,7 @@
 
 <body style="/*background: url(&quot;design.jpg&quot;);*/background-position: 0 -60px;">
 <nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
-    <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span class="bs-icon-sm bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center mr-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-down-right-square-fill">
+    <div class="container"><a class="navbar-brand d-flex align-items-center" href="index.jsp"><span class="bs-icon-sm bs-icon-circle bs-icon-primary shadow d-flex justify-content-center align-items-center mr-2 bs-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-down-right-square-fill">
                         <path d="M14 16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12zM5.904 5.197 10 9.293V6.525a.5.5 0 0 1 1 0V10.5a.5.5 0 0 1-.5.5H6.525a.5.5 0 0 1 0-1h2.768L5.197 5.904a.5.5 0 0 1 .707-.707z"></path>
                     </svg></span><span><strong>Travel Experts</strong></span></a><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-3"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navcol-3">
@@ -78,7 +77,7 @@
                 <li class="nav-item"><a class="nav-link" href="deletePackage.jsp">Delete</a></li>
                 <li class="nav-item"></li>
                 <li class="nav-item"><a class="nav-link" href="putPackage.jsp">Add</a></li>
-                <li class="nav-item"><a class="nav-link" href="contacts.html">Change</a></li>
+                <li class="nav-item"><a class="nav-link" href="editPackage.jsp">Change</a></li>
             </ul>
         </div>
     </div>
@@ -122,7 +121,7 @@
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <p class="font-weight-bold text-success mb-2">Packages</p>
-                <h2 class="font-weight-bold">Packages we Can Offer</h2>
+                <h2 class="font-weight-bold">Packages to Add</h2>
             </div>
         </div>
         <div class="row d-flex justify-content-center">

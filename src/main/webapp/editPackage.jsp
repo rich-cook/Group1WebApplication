@@ -1,71 +1,96 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: Richard
   Date: 2022-05-03
-  Time: 10:09 a.m.
+  Time: 10:08 a.m.
   To change this template use File | Settings | File Templates.
 --%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Package display</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script   src="https://code.jquery.com/jquery-3.6.0.js"   integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.1/dayjs.min.js"></script>
     <script>
+        //fetch all of the packages from the packages table
+        async function fetchPackages()
+        {
+            //url db connection
+            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/getpackages";
 
-        // insert a new package to travelexperts database
-        async function putPackage() {
-            var startdate = dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD");
-            var enddate = dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD");
-            // var price =$("#PkgBasePrice").val();
-            // var commission =$("#PkgAgencyCommission").val();
+            var packages = await fetch(url);
+            var packagesJSON = await packages.json();
+            for (i=0; i<packagesJSON.length; i++)
+            {
+                $("#packageselect").append("<option value='" + packagesJSON[i].packageId + "'>"
+                    + packagesJSON[i].pkgName + "</option>");
+            }
+        }
+        //getting the packages from the api via their id
+        async function fetchPackage(id) {
 
-            const insertData = {
-                "packageId":0,
+            //url db connection
+            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/getpackage/" + id;
+
+            var response = await fetch(url);
+            if (!response.ok)
+            {
+                throw new Error("Error occurred, status code = " + response.status);
+            }
+            var packageJSON = await response.json();
+            $("#PackageId").val(packageJSON.packageId);
+            $("#PkgName").val(packageJSON.pkgName);
+            var startdate = dayjs(packageJSON.pkgStartDate).format("YYYY-MM-DD");
+            $("#PkgStartDate").val(startdate);
+            var enddate = dayjs(packageJSON.pkgEndDate).format("YYYY-MM-DD");
+            $("#PkgEndDate").val(enddate);
+            $("#PkgDesc").val(packageJSON.pkgDesc);
+            $("#PkgBasePrice").val(packageJSON.pkgBasePrice);
+            $("#PkgAgencyCommission").val(packageJSON.pkgAgencyCommission);
+
+        }
+
+        async function editPackage()
+        {
+            //var startdate = dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD");
+            //var enddate = dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD");
+
+        //using jquery to get the values of the form to be edited
+            const editData = {
+                "packageId":$("#PackageId").val(),
                 "pkgName":$("#PkgName").val(),
-                "pkgStartDate":startdate,
-                "pkgEndDate":enddate,
+                "pkgStartDate":dayjs($("#PkgStartDate").val()).format("YYYY-MM-DD"),
+                "pkgEndDate":dayjs($("#PkgEndDate").val()).format("YYYY-MM-DD"),
                 "pkgDesc":$("#PkgDesc").val(),
                 "pkgBasePrice":$("#PkgBasePrice").val(),
                 "pkgAgencyCommission":$("#PkgAgencyCommission").val()
             };
 
-            //url for add packages from REST app
-            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/putpackage/";
-            try
-            {
-                const response = await fetch(url,
-                    {
-                        method: "put",
-                        //dataType: "json",
-                        headers: {"Content-type": "application/json"},
-                        body: JSON.stringify(insertData)
+            var url = "http://localhost:8080/Group1Term3RestM7_war_exploded/api/postpackage/"
 
-                    });
-                if (!response.ok) {
-                    const message = "Insert failed: status=" + response.status;
-                    throw new Error(message);
-                }
-                else
+            var response = await fetch(url,
                 {
-                    alert("Package Inserted");
-                    window.location.reload();
-                }
-                //const data = await response.json();
-               // $("#message").html(data.message);
-            }
-            catch (e) {
-                console.log("Error: " + e);
-            }
-        }
+                    method: "post",
+                    headers: {"Content-Type": "application/json"},
+                    body:JSON.stringify(editData)
+                });
+            alert("Package updated");
 
+        }
     </script>
 </head>
+
+
 
 <body style="/*background: url(&quot;design.jpg&quot;);*/background-position: 0 -60px;">
 <nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
@@ -78,7 +103,7 @@
                 <li class="nav-item"><a class="nav-link" href="deletePackage.jsp">Delete</a></li>
                 <li class="nav-item"></li>
                 <li class="nav-item"><a class="nav-link" href="putPackage.jsp">Add</a></li>
-                <li class="nav-item"><a class="nav-link" href="contacts.html">Change</a></li>
+                <li class="nav-item"><a class="nav-link" href="editPackage.jsp">Change</a></li>
             </ul>
         </div>
     </div>
@@ -114,15 +139,76 @@
     </div>
     <div class="container"></div>
 </section>
-
-
+<section>
+    <div class="container bg-primary-gradient py-4 py-xl-5">
+        <div class="py-5 p-lg-5">
+            <div class="row row-cols-1 row-cols-md-2 mx-auto" style="max-width: 900px;">
+                <div class="col mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-body px-4 py-5 px-md-5">
+                            <div class="bs-icon-lg d-flex justify-content-center align-items-center mb-3 bs-icon" style="top: 1rem;right: 1rem;position: absolute;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bell">
+                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"></path>
+                            </svg></div>
+                            <h5 class="font-weight-bold card-title">Lorem ipsum dolor sit&nbsp;</h5>
+                            <p class="text-muted card-text mb-4">Erat netus est hendrerit, nullam et quis ad cras porttitor iaculis. Bibendum vulputate cras aenean.</p><button class="btn btn-primary shadow" type="button">Learn more</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-body px-4 py-5 px-md-5">
+                            <div class="bs-icon-lg d-flex justify-content-center align-items-center mb-3 bs-icon" style="top: 1rem;right: 1rem;position: absolute;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-bezier">
+                                <path fill-rule="evenodd" d="M0 10.5A1.5 1.5 0 0 1 1.5 9h1A1.5 1.5 0 0 1 4 10.5v1A1.5 1.5 0 0 1 2.5 13h-1A1.5 1.5 0 0 1 0 11.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm10.5.5A1.5 1.5 0 0 1 13.5 9h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zM6 4.5A1.5 1.5 0 0 1 7.5 3h1A1.5 1.5 0 0 1 10 4.5v1A1.5 1.5 0 0 1 8.5 7h-1A1.5 1.5 0 0 1 6 5.5v-1zM7.5 4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z"></path>
+                                <path d="M6 4.5H1.866a1 1 0 1 0 0 1h2.668A6.517 6.517 0 0 0 1.814 9H2.5c.123 0 .244.015.358.043a5.517 5.517 0 0 1 3.185-3.185A1.503 1.503 0 0 1 6 5.5v-1zm3.957 1.358A1.5 1.5 0 0 0 10 5.5v-1h4.134a1 1 0 1 1 0 1h-2.668a6.517 6.517 0 0 1 2.72 3.5H13.5c-.123 0-.243.015-.358.043a5.517 5.517 0 0 0-3.185-3.185z"></path>
+                            </svg></div>
+                            <h5 class="font-weight-bold card-title">Lorem ipsum dolor sit&nbsp;</h5>
+                            <p class="text-muted card-text mb-4">Erat netus est hendrerit, nullam et quis ad cras porttitor iaculis. Bibendum vulputate cras aenean.</p><button class="btn btn-primary shadow" type="button">Learn more</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container py-4 py-xl-5">
+        <div class="mx-auto" style="max-width: 900px;">
+            <div class="row row-cols-1 row-cols-md-2 d-flex justify-content-center">
+                <div class="col mb-4">
+                    <div class="card bg-primary-light">
+                        <div class="card-body text-center px-4 py-5 px-md-5">
+                            <p class="font-weight-bold text-primary card-text mb-2">Fully Managed</p>
+                            <h5 class="font-weight-bold card-title mb-3">Lorem ipsum dolor sit&nbsp;nullam et quis ad cras porttitor</h5><button class="btn btn-primary btn-sm" type="button">Learn more</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-4">
+                    <div class="card bg-secondary-light">
+                        <div class="card-body text-center px-4 py-5 px-md-5">
+                            <p class="font-weight-bold text-secondary card-text mb-2">Fully Managed</p>
+                            <h5 class="font-weight-bold card-title mb-3">Lorem ipsum dolor sit&nbsp;nullam et quis ad cras porttitor</h5><button class="btn btn-secondary btn-sm" type="button">Learn more</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col mb-4">
+                    <div class="card bg-info-light">
+                        <div class="card-body text-center px-4 py-5 px-md-5">
+                            <p class="font-weight-bold text-info card-text mb-2">Fully Managed</p>
+                            <h5 class="font-weight-bold card-title mb-3">Lorem ipsum dolor sit&nbsp;nullam et quis ad cras porttitor</h5><button class="btn btn-info btn-sm" type="button">Learn more</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="py-5 mt-5"></section>
 <section class="py-4 py-xl-5 mt-5">
     <div class="container">
         <div class="row mb-5">
             <div class="col-md-8 col-xl-6 text-center mx-auto">
                 <p class="font-weight-bold text-success mb-2">Packages</p>
-                <h2 class="font-weight-bold">Packages to Add</h2>
+                <h2 class="font-weight-bold">Packages We Can Offer</h2>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
@@ -130,6 +216,10 @@
                 <div>
                     <form class="p-3 p-xl-4">
                         <div class="mb-3">
+
+                            <select id="packageselect" onchange="fetchPackage(this.value)">
+                                <option value="">Select a package to view details</option>
+                            </select>
                             <form>
                                 <div class="mb-3"><input class="form-control mt-3" id="PackageId" type="number" disabled="disabled" name="name" placeholder="Package ID"></div>
                                 <%--                                Id:<input id="PackageId" type="number" disabled="disabled" /><br />--%>
@@ -139,7 +229,7 @@
                                         <div class="mb-3"><input class="form-control mt-2" id="PkgDesc" type="text"placeholder="Package Description">
                                             <div class="mb-3"><input class="form-control mt-2" id="PkgBasePrice" type="number" step="0.01" placeholder="Package Base Price">
                                                 <div class="mb-3"><input class="form-control mt-2" id="PkgAgencyCommission" type="number" step=".01" placeholder="Agency Commission">
-                                                    <div><button class="btn btn-primary shadow d-block w-100" type="button" onclick="putPackage()">Submit</button></div>
+                                                    <div><button class="btn btn-primary shadow d-block w-100" type="button" onclick="editPackage(this.value)">Submit</button></div>
                             </form>
 
 
@@ -209,7 +299,7 @@
 </footer>
 <script>
     $(document).ready(function(){
-        // fetchPackages();
+        fetchPackages();
     });
 </script>
 <script src="assets/js/jquery.min.js"></script>
@@ -220,9 +310,4 @@
 </body>
 
 </html>
-
-
-
-
-
 
